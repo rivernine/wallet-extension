@@ -1,21 +1,16 @@
 /*global chrome*/
 import React, { useEffect, useState } from 'react';
 // Router
-import { Routes, Route, Link, Navigate } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 // Mui
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import logo from './logo.svg';
-import './App.css';
+import logo from '../logo.svg';
 
-import Home from './components/Home';
-import Ethereum from './components/ethereum/Ethereum';
-import Mnemonic from './components/ethereum/Mnemonic';
-import Solana from './components/solana/Solana';
-
-function App() {
+export default function Home() {
 
   const [url, setUrl] = useState('');
   // const [responseFromContent, setResponseFromContent] = useState('');
@@ -68,24 +63,29 @@ function App() {
 
   useEffect(() => {
     const queryInfo = { active: true, lastFocusedWindow: true };
+
     chrome.tabs && chrome.tabs.query(queryInfo, tabs => {
       const url = tabs[0].url;
       setUrl(url);
     });
   }, []);
 
-  console.log("App")
+  console.log("Home")
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/ethereum" element={<Ethereum />}>
-          <Route path="mnemonic" element={<Mnemonic />} />
-        </Route>
-        <Route path="/solana" element={<Solana />} />
-      </Routes>
-    </div>
+    <Box bgcolor="black" width='350px' height='600px' display='flex' flexDirection='column' justifyContent='center' >
+      <Typography variant="h3" color='gray'>Multi-asset</Typography>
+      <Stack
+        mt='20px'
+        alignItems='center' justifyContent='center'
+        direction="row" spacing={2}
+      >
+        <Link to="/ethereum">
+          <Button variant='contained' color="primary">Ethereum</Button>
+        </Link>
+        <Link to="/solana">
+          <Button variant='contained' color="secondary">Solana</Button>
+        </Link>
+      </Stack>
+    </Box>
   );
 }
-
-export default App;
