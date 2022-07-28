@@ -12,11 +12,12 @@ import Typography from '@mui/material/Typography';
 
 export default function Mnemonic() {
 
-  const [mnemonic, setMnemonic] = useState('');
+  const [walletMnemonic, setWalletMnemonic] = useState(null);
 
   const createMnemonic = async () => {
     const newMnemonic = await ethers.Wallet.createRandom().mnemonic
-    setMnemonic(newMnemonic)
+    const walletMnemonic = ethers.Wallet.fromMnemonic(newMnemonic.phrase)
+    setWalletMnemonic(walletMnemonic)
   }
 
   return (<>
@@ -26,9 +27,20 @@ export default function Mnemonic() {
       alignItems='center' justifyContent='center'
       direction="row" spacing={2}
     >
-      <Typography variant="h6" color='gray'>{mnemonic.phrase}</Typography>
-      <Typography variant="h6" color='gray'>{mnemonic.path}</Typography>
+      {
+        walletMnemonic !== null ?
+          <>
+            <Typography variant="subtitle2" color='gray'>{walletMnemonic.mnemonic.phrase}</Typography>
+            <Typography variant="subtitle2" color='gray'>{walletMnemonic.mnemonic.path}</Typography>
+            <Typography variant="subtitle2" color='gray'>{walletMnemonic.address}</Typography>
+            <Typography variant="subtitle2" color='gray'>{walletMnemonic.privateKey}</Typography>
+          </> :
+          null
+      }
       <Button variant='contained' color="primary" onClick={() => createMnemonic()}>Create mnemonic</Button>
+      <Link to="/ethereum/keyring">
+        <Button variant='contained' color="primary">Keyring</Button>
+      </Link>
     </Box>
   </>
 

@@ -12,7 +12,6 @@ import Mnemonic from './Mnemonic';
 
 export default function Ethereum() {
 
-  console.log("Ethereum")
   return (
     <>
       <Box bgcolor="black" width='350px' height='600px'>

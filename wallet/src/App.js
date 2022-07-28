@@ -14,6 +14,7 @@ import Home from './components/Home';
 import Ethereum from './components/ethereum/Ethereum';
 import Mnemonic from './components/ethereum/Mnemonic';
 import Solana from './components/solana/Solana';
+import KeyringController from './components/ethereum/keyring/KeyringController';
 
 function App() {
 
@@ -81,6 +82,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/ethereum" element={<Ethereum />}>
           <Route path="mnemonic" element={<Mnemonic />} />
+          <Route path="keyring" element={<KeyringController />} />
         </Route>
         <Route path="/solana" element={<Solana />} />
       </Routes>
