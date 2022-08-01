@@ -12,9 +12,12 @@ import './App.css';
 
 import Home from './components/Home';
 import Ethereum from './components/ethereum/Ethereum';
+import SignIn from './components/ethereum/SignIn';
+import SignUp from './components/ethereum/SignUp';
 import Mnemonic from './components/ethereum/Mnemonic';
-import Solana from './components/solana/Solana';
 import KeyringController from './components/ethereum/keyring/KeyringController';
+
+import Solana from './components/solana/Solana';
 
 function App() {
 
@@ -81,6 +84,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/ethereum" element={<Ethereum />}>
+          <Route path="signIn" element={<SignIn />} />
+          <Route path="signUp" element={<SignUp />} />
           <Route path="mnemonic" element={<Mnemonic />} />
           <Route path="keyring" element={<KeyringController />} />
         </Route>

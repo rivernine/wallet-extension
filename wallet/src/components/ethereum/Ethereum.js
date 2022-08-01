@@ -23,8 +23,11 @@ export default function Ethereum() {
           alignItems='center' justifyContent='center' 
           direction="row" spacing={2}
         >
-          <Link to="/ethereum/mnemonic">
-            <Button variant='contained' color="primary">Mnemonic</Button>
+          <Link to="/ethereum/signIn">
+            <Button variant='contained' color="primary">Signin</Button>
+          </Link>
+          <Link to="/ethereum/signUp">
+            <Button variant='contained' color="primary">Signup</Button>
           </Link>
           <Link to="/">
             <Button variant='contained' color="warning">Go main</Button>
