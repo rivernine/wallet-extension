@@ -25,13 +25,15 @@ export default function SignIn() {
 
   const [encPassword, setEncPassword] = useState('');
   const [decResult, setDecResult] = useState('');
+  const [address, setAddress] = useState('');
 
   const dec = (password) => {
     chrome.storage.local.get('data', function (result) {
       const vault = result.data.KeyringController.vault
       passworder.decrypt(password, vault)
         .then((keyringsWithEncodedMnemonic) => {
-          setDecResult(keyringsWithEncodedMnemonic)
+          // setDecResult(keyringsWithEncodedMnemonic)
+          setAddress(keyringsWithEncodedMnemonic)
           const keyringsWithDecodedMnemonic = keyringsWithEncodedMnemonic.map(keyring => {
             if ('mnemonic' in keyring.data) {
               return Object.assign(
@@ -80,7 +82,7 @@ export default function SignIn() {
         </Box>
         <Button variant='contained' color="primary" onClick={() => dec(encPassword)}>Decrypt</Button>
         <Typography variant="subtitle1" color='black'>Mnemonic</Typography>
-        <Typography variant="subtitle2" color='black'>{decResult}</Typography>
+        <Typography variant="subtitle2" color='black'>{address}</Typography>
       </Box>
     </Box>
   </>

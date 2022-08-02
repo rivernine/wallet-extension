@@ -20,65 +20,6 @@ import KeyringController from './components/ethereum/keyring/KeyringController';
 import Solana from './components/solana/Solana';
 
 function App() {
-
-  const [url, setUrl] = useState('');
-  // const [responseFromContent, setResponseFromContent] = useState('');
-
-  // const sendTestMessage = () => {
-  //   const message = {
-  //     from: "React",
-  //     message: "Hello from React"
-  //   };
-  //   const queryInfo = {
-  //     active: true,
-  //     currentWindow: true
-  //   };
-
-  //   chrome.tabs && chrome.tabs.query(queryInfo, tabs => {
-  //     const currentTabId = tabs[0].id;
-  //     // console.log('currentTabId', currentTabId)
-  //     chrome.tabs.sendMessage(
-  //       currentTabId,
-  //       message,
-  //       (response) => {
-  //         setResponseFromContent(response);
-  //       }
-  //     )
-  //   })
-
-  // }
-
-  // const sendRemoveMessage = () => {
-  //   const message = {
-  //     from: "React",
-  //     message: "delete logo"
-  //   };
-  //   const queryInfo = {
-  //     active: true,
-  //     currentWindow: true
-  //   };
-
-  //   chrome.tabs && chrome.tabs.query(queryInfo, tabs => {
-  //     const currentTabId = tabs[0].id;
-  //     chrome.tabs.sendMessage(
-  //       currentTabId,
-  //       message,
-  //       (response) => {
-  //         setResponseFromContent(response);
-  //       }
-  //     )
-  //   })
-  // }
-
-  useEffect(() => {
-    const queryInfo = { active: true, lastFocusedWindow: true };
-    chrome.tabs && chrome.tabs.query(queryInfo, tabs => {
-      const url = tabs[0].url;
-      setUrl(url);
-    });
-  }, []);
-
-  console.log("App")
   return (
     <div className="App">
       <Routes>
