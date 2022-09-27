@@ -1,7 +1,7 @@
 /*global chrome*/
 import React, { useEffect, useState } from 'react';
 // Router
-import { Routes, Route, Link, useParams, useLocation } from "react-router-dom";
+import { Routes, Route, Link, useParams, useLocation, useNavigate, Navigate } from "react-router-dom";
 // Ethers
 import { ethers } from "ethers";
 // Passworder
@@ -15,28 +15,38 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import Input from '@mui/material/Input';
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
-export default function SaveMnemonic() {
+const Alert = React.forwardRef(function Alert(
+  props,
+  ref,
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+export default function CheckMnemonic() {
   const loc = useLocation()
+  const navigate = useNavigate();
   const generatedPhrase = loc.state.phrase
 
   let idx = 0;
   const [inputs, setInputs] = useState([
     "", "", "", "", "", "", "", "", "", "", "", ""
   ])
-  const [walletMnemonic, setWalletMnemonic] = useState(null);
 
-  const createMnemonic = async () => {
-    const newMnemonic = await ethers.Wallet.createRandom().mnemonic
-    const walletMnemonic = ethers.Wallet.fromMnemonic(newMnemonic.phrase)
-    setWalletMnemonic(walletMnemonic)
-    setMnemonic(walletMnemonic.mnemonic.phrase)
-  }
+  const [open, setOpen] = useState(false);
 
-  const [mnemonic, setMnemonic] = useState('');
-  const [mnemonicPassword, setMnemonicPassword] = useState('');
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
-  const enc = (password, secrets) => {
+  const encAndSave = (password, secrets) => {
     passworder.encrypt(password, secrets)
       .then(function (blob) {
         chrome.storage.local.set({
@@ -56,6 +66,7 @@ export default function SaveMnemonic() {
   return (
     <>
       <Box
+        width="350px"
         py={3}
         alignItems='center' justifyContent='center'
       >
@@ -91,16 +102,25 @@ export default function SaveMnemonic() {
       <Button
         variant='contained' color="primary"
         onClick={() => {
-          if(inputs.join(" ") === generatedPhrase) {
-            console.log("Correct")
+          if (inputs.join(" ") === generatedPhrase) {
+            navigate('/ethereum/mnemonic/save', { state: { phrase: generatedPhrase } })
           } else {
-            console.log("Incorrect");
+            setOpen(true);
           }
-          // enc(mnemonicPassword, mnemonic)
         }}
       >
         Next
       </Button>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={open}
+        autoHideDuration={1000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+          Please re-enter the mnemonic
+        </Alert>
+      </Snackbar>
     </>
   );
 }

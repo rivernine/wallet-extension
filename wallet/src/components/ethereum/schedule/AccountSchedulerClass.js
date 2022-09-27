@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { setBalance } from '../../../redux/slice/ethereumSlice';
+import { Mutex } from 'async-mutex';
 import HttpProvider from 'ethjs-provider-http';
 import EthQuery from 'eth-query';
 
@@ -10,6 +11,10 @@ import { stringToBigNumber, bigNumberToEther, safelyExecuteWithTimeout } from '.
 
 export default class AccountSchedulerClass {
 
+  dispatch = useDispatch();
+  address = useSelector((state) => state.ethereum.address);
+  mutex = new Mutex();
+
   constructor() {
     // this.test = useSelector((state) => state.ethereum.balance);
     // this.dispatch = useDispatch();
@@ -18,13 +23,23 @@ export default class AccountSchedulerClass {
   }
 
   poll = async (interval) => {
-    setInterval(() => {
-      console.log('interval')
+    const releaseLock = await this.mutex.acquire();
+    // interval && this.configure({ interval })
+
+    this.handle && clearTimeout(this.handle)
+
+    const balance = await this.getBalance();
+    // console.log(bigNumberToEther(stringToBigNumber(balance)))
+    this.dispatch(setBalance(bigNumberToEther(stringToBigNumber(balance))))
+    this.handle = setInterval(() => {
+      releaseLock();
+      this.poll(interval)
+      // this.refresh()
     }, interval)
   }
 
-  refresh = async () => {
-    const balance = await getAddressBalance(this.ethQuery, "0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134");
+  getBalance = async () => {
+    const balance = await getAddressBalance(this.ethQuery, this.address);
     return balance;
   };
 }

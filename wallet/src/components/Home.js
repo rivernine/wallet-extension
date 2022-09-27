@@ -12,13 +12,32 @@ import logo from '../logo.svg';
 
 export default function Home() {
 
+  const [ethLocalData, setEthLocalData] = useState(null)
+
+  useEffect(() => {
+    let mounted = true;
+    
+    // Dev
+    if (mounted) {
+      setEthLocalData("test")
+    }
+
+    // Prod
+    // chrome.storage.local.get('data', function (result) {
+    //   const vault = result.data.KeyringController.vault
+    //   if (mounted) {
+    //     setEthLocalData(vault);
+    //   }
+    // })
+    return (() => mounted = false);
+  })
+
   console.log("Home")
   return (
     <Box
-      border={0.1} borderColor={"gray"}
       width="350px" height="550px"
       display={"flex"} flexDirection={"column"}
-      justifyContent={"center"} alignItems={"center"}      
+      justifyContent={"center"} alignItems={"center"}
     >
       <Typography color='black' fontSize={"26px"} fontWeight={"800"}>
         Select network
@@ -29,7 +48,14 @@ export default function Home() {
         spacing={1}
       >
         <Button
-          component={Link} to="/ethereum/mnemonic"
+          component={Link}
+          to={
+            ethLocalData !== null
+              ?
+              "/ethereum/mnemonic/decrypt"
+              :
+              "/ethereum/mnemonic/generate"
+          }
           variant='contained' color="primary"
         >
           <Typography fontWeight={"600"}>

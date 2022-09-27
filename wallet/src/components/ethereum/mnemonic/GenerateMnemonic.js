@@ -10,7 +10,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 
-export default function Mnemonic() {
+export default function GenerateMnemonic() {
   let idx = 0;
   // const [walletMnemonic, setWalletMnemonic] = useState(null);
   const [mnemonicPhrase, setMnemonicPhrase] = useState(null);
@@ -54,7 +54,7 @@ export default function Mnemonic() {
             }
             <Box mt={2}>
               <Button
-                component={Link} to={"/ethereum/mnemonic/save"}
+                component={Link} to={"/ethereum/mnemonic/check"}
                 state={{ phrase: mnemonicPhrase}}
                 variant='contained' color="primary"
               >

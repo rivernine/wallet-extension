@@ -1,8 +1,8 @@
 .Header {
   text-align: center;
   background-color: #a31545;
-  width: 350px;
-  height: 50px;
+  /* width: 350px; */
+  /* height: 50px; */
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -11,8 +11,8 @@
 .App {
   text-align: center;
   background-color: white;
-  width: 350px;
-  height: 550px;  
+  /* width: 349px; */
+  /* height: 550px;   */
 }
 
 @media (prefers-reduced-motion: no-preference) {
